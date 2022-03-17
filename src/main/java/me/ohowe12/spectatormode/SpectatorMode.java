@@ -91,6 +91,7 @@ public class SpectatorMode extends JavaPlugin {
 
         Messenger.init(this);
         registerListeners();
+        checkGriefPreventionSupport();
     }
 
     private void initializeLuckPermsContext() {
@@ -140,6 +141,19 @@ public class SpectatorMode extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnLogOnListener(this), this);
         getServer().getPluginManager().registerEvents(new OnCommandPreprocessListener(this), this);
         getServer().getPluginManager().registerEvents(new OnGameModeChangeListener(this), this);
+    }
+
+    private void checkGriefPreventionSupport() {
+        boolean installed = this.getServer().getPluginManager().isPluginEnabled("GriefPrevention");
+        boolean support = this.config.getBoolean("grief-prevention-support");
+        if(support) {
+            if(! installed) {
+                pluginLogger.logIfNotInTests(Logger.RED + "To enable support for GriefPrevention please ensure it is installed on this server");
+                this.getServer().getPluginManager().disablePlugin(this);
+            } else {
+                pluginLogger.logIfNotInTests(Logger.CYAN + "Support for GriefPrevention has been successfully enabled");
+            }
+        }
     }
 
     @NotNull
