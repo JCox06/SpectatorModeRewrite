@@ -1,5 +1,8 @@
 package me.ohowe12.spectatormode.util;
 
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -21,6 +24,26 @@ public class SpectatorEligibilityChecker {
         if(configManager.getBoolean("enforce-y") && player.getLocation().getY() <= configManager.getInt("y-level")) {
             return EligibilityStatus.YLEVEL;
         }
+        if(configManager.getBoolean("grief-prevention-support")) {
+            GriefPrevention inst = GriefPrevention.instance;
+            if(inst == null) {
+                return EligibilityStatus.CAN_GO;
+            }
+
+            Claim claim = inst.dataStore.getClaimAt(player.getLocation(), false, null);
+
+            if(claim == null) {
+                return EligibilityStatus.CLAIM;
+            }
+
+            if(claim.hasExplicitPermission(player, ClaimPermission.Build)) {
+                return EligibilityStatus.CAN_GO;
+            }
+
+            return EligibilityStatus.CLAIM;
+        }
+
+
         double closestAllowed = configManager.getDouble("closest-hostile");
         if (closestAllowed != 0) {
             for (Entity entity : player.getNearbyEntities(closestAllowed, closestAllowed, closestAllowed)) {
@@ -41,7 +64,8 @@ public class SpectatorEligibilityChecker {
         HEALTH("health-message"),
         MOB("mob-too-close-message"),
         WORLDS("world-message"),
-        YLEVEL("y-level-limit-message");
+        YLEVEL("y-level-limit-message"),
+        CLAIM("not-in-claim-message");
 
         private final String message;
 

@@ -25,11 +25,14 @@ package me.ohowe12.spectatormode.listener;
 
 import me.ohowe12.spectatormode.SpectatorMode;
 import me.ohowe12.spectatormode.util.Messenger;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEvent;
@@ -39,6 +42,7 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +61,9 @@ public class OnMoveListener implements Listener {
         }
         if (shouldProcessEvent(moveEvent) && shouldCancelMoveEvent(moveEvent)) {
             cancelPlayerMoveEvent(moveEvent);
+
         }
+
     }
 
     @EventHandler
@@ -68,18 +74,22 @@ public class OnMoveListener implements Listener {
         }
     }
 
+
+
     private boolean shouldCancelMoveEvent(PlayerMoveEvent moveEvent) {
         boolean enforceY = plugin.getConfigManager().getBoolean("enforce-y");
         boolean enforceDistance = plugin.getConfigManager().getBoolean("enforce-distance");
         boolean enforceWorldBorder =
                 plugin.getConfigManager().getBoolean("enforce-world-border");
         boolean hasToBeSpectating = plugin.getConfigManager().getBoolean("only-spectating-no-free-movement");
+        boolean claim = plugin.getConfigManager().getBoolean("grief-prevention-support");
 
         return (hasToBeSpectating && isNotSpectating(moveEvent))
                 || (enforceY && checkAndEnforceY(moveEvent))
                 || isCollidingAndCollidingNotAllowed(moveEvent)
                 || (enforceDistance && distanceTooFar(moveEvent))
                 || (enforceWorldBorder && outsideWorldBorder(moveEvent)
+                || (claim && distanceOutsideClaimRange(moveEvent))
         );
     }
 
@@ -163,6 +173,17 @@ public class OnMoveListener implements Listener {
         }
     }
 
+    private boolean distanceOutsideClaimRange(PlayerMoveEvent moveEvent) {
+        if( !plugin.getSpectatorManager().getStateHolder().hasPlayer(moveEvent.getPlayer())) {
+            return false;
+        }
+        GriefPrevention instance = GriefPrevention.instance;
+        if(instance.dataStore.getClaimAt(moveEvent.getTo(), false, null) == null) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean shouldCancelTeleport(PlayerTeleportEvent teleportEvent) {
         return (teleportEvent.getCause() == PlayerTeleportEvent.TeleportCause.SPECTATE)
                 && plugin.getConfigManager().getBoolean("prevent-teleport");
@@ -173,5 +194,4 @@ public class OnMoveListener implements Listener {
                 && plugin.getSpectatorManager().getStateHolder().hasPlayer(event.getPlayer())
                 && event.getPlayer().getGameMode() == GameMode.SPECTATOR;
     }
-
 }

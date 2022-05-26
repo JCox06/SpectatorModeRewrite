@@ -24,6 +24,10 @@ enforce-worlds: false
 # The names of the worlds spectator mode is allowed in
 worlds-allowed: [ world, world_nether, world_the_end ]
 
+#GreifPrevention support. Only allow the entering and movement of spectator if the player is authorized in a claim
+#GreifPrevention is required to be installed on the server for this feature to work
+grief-prevention-support: false
+
 # If the y level is limited to the number in y-level in spectator mode
 enforce-y: false
 
@@ -164,6 +168,9 @@ times-up-message: '&cTime limit reached! Toggling gamemode to &b&lSURVIVAL MODE'
 
 # Message sent when player is awaiting spectator and preforms the command again
 spec-cancel-message: '&cSpectator mode has been cancelled'
+
+# Message sent when a player is not in their claim
+not-in-claim-message: '&cYou need to be in your claim to complete this action'
 
 # Get debug logs
 debug: false
