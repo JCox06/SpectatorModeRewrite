@@ -34,6 +34,8 @@ import me.ohowe12.spectatormode.listener.OnMoveListener;
 import me.ohowe12.spectatormode.util.ConfigManager;
 import me.ohowe12.spectatormode.util.Logger;
 import me.ohowe12.spectatormode.util.Messenger;
+import me.ohowe12.spectatormode.util.claim.ClaimCheck;
+import me.ohowe12.spectatormode.util.claim.ClaimCheckGriefPreventionHook;
 import wtf.choco.updatechecker.UpdateChecker;
 
 import org.bstats.bukkit.Metrics;
@@ -52,6 +54,8 @@ public class SpectatorMode extends JavaPlugin {
     private SpectatorManager spectatorManager;
     private ConfigManager config;
     private Logger pluginLogger;
+
+    private ClaimCheck claimCheck;
 
     public SpectatorMode() {
         super();
@@ -91,7 +95,7 @@ public class SpectatorMode extends JavaPlugin {
 
         Messenger.init(this);
         registerListeners();
-        checkGriefPreventionSupport();
+        registerClaimHooks();
     }
 
     private void initializeLuckPermsContext() {
@@ -143,17 +147,25 @@ public class SpectatorMode extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnGameModeChangeListener(this), this);
     }
 
-    private void checkGriefPreventionSupport() {
-        boolean installed = this.getServer().getPluginManager().isPluginEnabled("GriefPrevention");
-        boolean support = this.config.getBoolean("grief-prevention-support");
-        if(support) {
-            if(! installed) {
-                pluginLogger.logIfNotInTests(Logger.RED + "To enable support for GriefPrevention please ensure it is installed on this server");
-                this.getServer().getPluginManager().disablePlugin(this);
-            } else {
-                pluginLogger.logIfNotInTests(Logger.CYAN + "Support for GriefPrevention has been successfully enabled");
-            }
+    private void registerClaimHooks() {
+
+        //Check if user wants to turn of claim checking
+        if(!getConfigManager().getBoolean("player-land-claim-checking")) {
+            pluginLogger.log("Land Claiming plugin integration is disabled. Skipping");
+            this.claimCheck = new ClaimCheck();
+            return;
         }
+        pluginLogger.log("Checking for compatible claim plugins installed");
+
+        //Check for GriefPrevention support
+        if(this.getServer().getPluginManager().isPluginEnabled("GriefPrevention")) {
+            pluginLogger.log("Found GriefPrevention! Enabling support");
+            this.claimCheck = new ClaimCheckGriefPreventionHook();
+            return;
+        }
+
+        pluginLogger.log("Did not find a compatible land claiming plugin. Please turn OFF player-land-claim-checking in config.yaml or install a compatible plugin");
+        this.claimCheck = new ClaimCheck();
     }
 
     @NotNull
@@ -168,6 +180,10 @@ public class SpectatorMode extends JavaPlugin {
     public void reloadConfigManager() {
         this.reloadConfig();
         config = new ConfigManager(this, this.getConfig());
+    }
+
+    public ClaimCheck getClaimCheck() {
+        return this.claimCheck;
     }
 
     public Logger getPluginLogger() {

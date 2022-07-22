@@ -161,7 +161,7 @@ public class SpectatorManager {
     }
 
     private boolean canGoIntoSpectator(Player player, boolean forced) {
-        SpectatorEligibilityChecker.EligibilityStatus status = SpectatorEligibilityChecker.getStatus(player, forced, plugin.getConfigManager());
+        SpectatorEligibilityChecker.EligibilityStatus status = SpectatorEligibilityChecker.getStatus(player, forced, plugin.getConfigManager(), plugin.getClaimCheck());
 
         if (status == SpectatorEligibilityChecker.EligibilityStatus.CAN_GO) {
             return true;

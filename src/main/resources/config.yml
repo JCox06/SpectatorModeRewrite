@@ -24,9 +24,9 @@ enforce-worlds: false
 # The names of the worlds spectator mode is allowed in
 worlds-allowed: [ world, world_nether, world_the_end ]
 
-#GreifPrevention support. Only allow the entering and movement of spectator if the player is authorized in a claim
-#GreifPrevention is required to be installed on the server for this feature to work
-grief-prevention-support: false
+#Ensures that the player is in a land claim before they use spectator mode
+#Automatically detects your land claim plugin, currently supports: GriefPrevention
+player-land-claim-checking: false
 
 # If the y level is limited to the number in y-level in spectator mode
 enforce-y: false

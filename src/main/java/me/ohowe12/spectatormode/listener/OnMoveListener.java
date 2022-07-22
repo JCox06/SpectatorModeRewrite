@@ -82,14 +82,13 @@ public class OnMoveListener implements Listener {
         boolean enforceWorldBorder =
                 plugin.getConfigManager().getBoolean("enforce-world-border");
         boolean hasToBeSpectating = plugin.getConfigManager().getBoolean("only-spectating-no-free-movement");
-        boolean claim = plugin.getConfigManager().getBoolean("grief-prevention-support");
 
         return (hasToBeSpectating && isNotSpectating(moveEvent))
                 || (enforceY && checkAndEnforceY(moveEvent))
                 || isCollidingAndCollidingNotAllowed(moveEvent)
                 || (enforceDistance && distanceTooFar(moveEvent))
                 || (enforceWorldBorder && outsideWorldBorder(moveEvent)
-                || (claim && distanceOutsideClaimRange(moveEvent))
+                || (distanceOutsideClaimRange(moveEvent))
         );
     }
 
@@ -177,11 +176,7 @@ public class OnMoveListener implements Listener {
         if( !plugin.getSpectatorManager().getStateHolder().hasPlayer(moveEvent.getPlayer())) {
             return false;
         }
-        GriefPrevention instance = GriefPrevention.instance;
-        if(instance.dataStore.getClaimAt(moveEvent.getTo(), false, null) == null) {
-            return true;
-        }
-        return false;
+        return !plugin.getClaimCheck().hasPermissionInClaim(moveEvent.getPlayer(), moveEvent.getTo());
     }
 
     private boolean shouldCancelTeleport(PlayerTeleportEvent teleportEvent) {
