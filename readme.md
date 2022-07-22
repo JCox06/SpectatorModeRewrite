@@ -1,4 +1,3 @@
-# **NO LONGER IN DEVELOPMENT**
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/b886095a96a861fe1a35/maintainability)](https://codeclimate.com/github/carelesshippo/SpectatorModeRewrite/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b886095a96a861fe1a35/test_coverage)](https://codeclimate.com/github/carelesshippo/SpectatorModeRewrite/test_coverage)
@@ -6,9 +5,13 @@
 
 ---
 
-### This plugin is not being actively developed. New features are however welcome. If you would like a new feature open a issue [here](https://github.com/carelesshippo/SpectatorModeRewrite/issues).
+I use this plugin mostly on my SMP server with my friends. The author stopped updating it, so I thought I would share my updates to the plugin.
 
-Download on [SpigotMC](https://www.spigotmc.org/resources/smp-spectator-mode.77267/)
+## Updates to 2.2.1
+* Added ClaimCheck class which can be extended to hook into other plugins which provide land claiming functionality
+* The new system isn't perfect, and needs way more testing, but it works for now
+* To enabled ClaimCheck tick the option player-land-claim-checking in config.yml and install a compatible plugin
+
 
 <details><summary>Default config file</summary>
 <p>
@@ -40,6 +43,10 @@ teleport-back: false
 enforce-worlds: false
 # The names of the worlds spectator mode is allowed in
 worlds-allowed: [ world, world_nether, world_the_end ]
+
+#Ensures that the player is in a land claim before they use spectator mode
+#Automatically detects your land claim plugin, currently supports: GriefPrevention
+player-land-claim-checking: false
 
 # If the y level is limited to the number in y-level in spectator mode
 enforce-y: false
