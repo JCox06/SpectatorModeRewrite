@@ -1,16 +1,18 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/b886095a96a861fe1a35/maintainability)](https://codeclimate.com/github/carelesshippo/SpectatorModeRewrite/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b886095a96a861fe1a35/test_coverage)](https://codeclimate.com/github/carelesshippo/SpectatorModeRewrite/test_coverage)
-# SMP Spectator Mode
+# SMP Spectator Mode 
+## UNSTABLE Version 3
+
+This version is unstable and incomplete. Use only for testing
 
 ---
 
 I use this plugin mostly on my SMP server with my friends. The author stopped updating it, so I thought I would share my updates to the plugin.
 
-## Updates to 2.2.1
-* Added ClaimCheck class which can be extended to hook into other plugins which provide land claiming functionality
-* The new system isn't perfect, and needs way more testing, but it works for now
-* To enabled ClaimCheck tick the option player-land-claim-checking in config.yml and install a compatible plugin
+## Updates to 3.0
+* SPM spectator mode no longer runs in spectator but instead runs in a reduced creative mode.
+* Added spectator options on the hotbar to allow changing the weather, time, and potions effects active. At the minute these buttons are useless and will not work.
 
 
 <details><summary>Default config file</summary>
