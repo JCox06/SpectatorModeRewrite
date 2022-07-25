@@ -58,12 +58,6 @@ public class SpectatorCommand extends BaseCommand {
         Messenger.send(sender, "reload-message");
     }
 
-    @Subcommand("effect")
-    @Description("Toggles your spectator effects if enabled")
-    @CommandPermission("smpspectator.toggle")
-    public void toggleEffectsCommand(Player player) {
-        spectatorManager.togglePlayerEffects(player);
-    }
 
     @Subcommand("force")
     @Description("Forces a player into spectator mode")

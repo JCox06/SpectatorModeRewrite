@@ -34,6 +34,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -190,6 +192,10 @@ public class StateHolder {
             final boolean needsSurvival = playerSection.getBoolean("Needs survival", false);
             stateBuilder.setNeedsSurvival(needsSurvival);
 
+            final List<ItemStack> items = (List<ItemStack>) playerSection.getList("Inventory");
+            stateBuilder.setInventory(items);
+
+
             stateMap.put(key, stateBuilder.build());
         }
     }
@@ -244,7 +250,7 @@ public class StateHolder {
     public void addPlayerKicker(Player player) {
         kickers.put(player, plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             kickers.remove(player);
-            if (player.getGameMode() != GameMode.SPECTATOR) {
+            if (player.getGameMode() != GameMode.CREATIVE) {
                 plugin.getPluginLogger().debugLog("Player not in spectator when task ended");
                 return;
             }

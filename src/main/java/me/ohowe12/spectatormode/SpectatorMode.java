@@ -86,10 +86,10 @@ public class SpectatorMode extends JavaPlugin {
         spectatorManager = new SpectatorManager(this);
         registerCommands();
         if (config.getBoolean("update-checker")) {
-            checkUpdate();
+            //checkUpdate();
         }
         if (!unitTest) {
-            addMetrics();
+            //addMetrics();
             initializeLuckPermsContext();
         }
 

@@ -20,7 +20,7 @@ public class OnGameModeChangeListener implements Listener {
     @EventHandler
     public void onGameModeChange(PlayerGameModeChangeEvent gameModeChangeEvent) {
         if (plugin.getConfigManager().getBoolean("watch-gamemode")
-                && gameModeChangeEvent.getNewGameMode() != GameMode.SPECTATOR
+                && gameModeChangeEvent.getNewGameMode() != GameMode.CREATIVE
                 && stateHolder.hasPlayer(gameModeChangeEvent.getPlayer())) {
             stateHolder.removePlayer(gameModeChangeEvent.getPlayer());
             stateHolder.cancelKicker(gameModeChangeEvent.getPlayer());

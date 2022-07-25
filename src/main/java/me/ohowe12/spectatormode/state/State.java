@@ -30,10 +30,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +48,7 @@ public class State {
     private final int waterBubbles;
     private final Map<String, Boolean> mobIds;
     private boolean needsSurvival;
+    private final List<ItemStack> inventory;
 
     public State(StateBuilder builder, SpectatorMode plugin) {
         this.plugin = plugin;
@@ -58,16 +58,30 @@ public class State {
         this.potionEffects = builder.potionEffects;
         this.waterBubbles = builder.waterBubbles;
         this.needsSurvival = builder.needsSurvival;
+        this.inventory = builder.inventory;
     }
 
     public static State fromPlayer(Player player, SpectatorMode plugin) {
         Validate.notNull(player);
+
+        //List<ItemStack> playerInv = new ArrayList<>();
+
+//        for(int i = 0; i < player.getInventory().getSize(); i++) {
+//            ItemStack currentItem = player.getInventory().getItem(i);
+//            if(currentItem != null) {
+//                playerInv.add(currentItem);
+//            }
+//        }
+
+        List<ItemStack> playerInv = Arrays.asList(player.getInventory().getContents());
+
         State state =
                 new StateBuilder(plugin)
                         .setPlayerLocation(player.getLocation())
                         .setFireTicks(player.getFireTicks())
                         .setPotionEffects(new ArrayList<>(player.getActivePotionEffects()))
                         .setWaterBubbles(player.getRemainingAir())
+                        .setInventory(playerInv)
                         .build();
         state.prepareMobs(player);
 
@@ -102,11 +116,19 @@ public class State {
         this.needsSurvival = needsSurvival;
     }
 
+    public List<ItemStack> getInventory() {
+        return inventory;
+    }
+
     public void resetPlayer(Player player) {
         player.teleport(getPlayerLocation());
         player.setFireTicks(getFireTicks());
         player.addPotionEffects(getPotionEffects());
         player.setRemainingAir(getWaterBubbles());
+
+        ItemStack[] inv = new ItemStack[getInventory().size()];
+        getInventory().toArray(inv);
+        player.getInventory().setContents(inv);
     }
 
     private void prepareMobs(Player player) {
@@ -207,6 +229,7 @@ public class State {
         serialized.put("Water bubbles", waterBubbles);
         serialized.put("Mobs", mobIds);
         serialized.put("Needs survival", needsSurvival);
+        serialized.put("Inventory", inventory);
         return serialized;
     }
 
@@ -218,6 +241,7 @@ public class State {
         private int waterBubbles = 300;
         private Map<String, Boolean> mobIds = new HashMap<>();
         private boolean needsSurvival = false;
+        private List<ItemStack> inventory;
 
         public StateBuilder(SpectatorMode plugin) {
             this.plugin = plugin;
@@ -254,6 +278,11 @@ public class State {
 
         public StateBuilder setNeedsSurvival(boolean needsSurvival) {
             this.needsSurvival = needsSurvival;
+            return this;
+        }
+
+        public StateBuilder setInventory(List<ItemStack> items) {
+            this.inventory = items;
             return this;
         }
     }

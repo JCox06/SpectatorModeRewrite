@@ -30,17 +30,19 @@ import me.ohowe12.spectatormode.util.Messenger;
 import me.ohowe12.spectatormode.util.SpectatorEligibilityChecker;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class SpectatorManager {
     private static final PotionEffect NIGHT_VISION =
@@ -75,7 +77,10 @@ public class SpectatorManager {
             Messenger.send(player, "disabled-message");
             return;
         }
-        if (player.getGameMode() == GameMode.SPECTATOR) {
+
+
+        //If player is already in SMP Spectator then transfer them back to survival
+        if (player.getGameMode() == GameMode.CREATIVE) {
             toggleToSurvival(player, silenceMessages);
         } else {
             if (plugin.getConfigManager().getInt("stand-still-ticks") > 0 && !forced) {
@@ -84,12 +89,12 @@ public class SpectatorManager {
                 } else {
                     Messenger.send(player, "stand-still-message");
                     stateHolder.addPlayerAwaiting(player, () -> {
-                        toggleToSpectator(player, false, silenceMessages);
+                        toggleToSMPSpectator(player, false, silenceMessages);
                         stateHolder.removePlayerAwaitingFromRan(player);
                     });
                 }
             } else {
-                toggleToSpectator(player, forced, silenceMessages);
+                toggleToSMPSpectator(player, forced, silenceMessages);
             }
         }
     }
@@ -102,9 +107,10 @@ public class SpectatorManager {
         togglePlayer(player, false);
     }
 
-    public void toggleToSpectator(Player target, boolean forced, boolean messagesForcedSilenced) {
+    public void toggleToSMPSpectator(Player target, boolean forced, boolean messagesForcedSilenced) {
         plugin.getPluginLogger().debugLog("Toggling " + target.getName() + " to spectator mode");
         if (canGoIntoSpectator(target, forced)) {
+
             if (stateHolder.hasPlayer(target)) {
                 stateHolder.removePlayer(target);
             }
@@ -113,12 +119,15 @@ public class SpectatorManager {
 
             addToKickers(target);
             removeAllPotionEffects(target);
+            addSpectatorInventory(target);
             removeLeads(target);
 
-            target.setGameMode(GameMode.SPECTATOR);
+
             addSpectatorEffectsIfEnabled(target);
 
             stateHolder.save();
+
+            target.setGameMode(GameMode.CREATIVE);
 
             sendMessageIfNotSilenced(target, GameMode.SPECTATOR, messagesForcedSilenced);
         }
@@ -126,7 +135,10 @@ public class SpectatorManager {
 
     public void toggleToSurvival(Player target, boolean messagesForcedSilenced) {
         plugin.getPluginLogger().debugLog("Toggling " + target.getName() + " to survival mode");
+
+
         if (stateHolder.hasPlayer(target)) {
+            this.plugin.getPluginLogger().debugLog("StateHolder has player. Exiting SMP Spectator For: " + target.getName());
             removeSpectatorEffects(target);
 
             stateHolder.getPlayer(target).resetPlayer(target);
@@ -233,12 +245,23 @@ public class SpectatorManager {
             Messenger.send(player, "no-spectator-message");
             return;
         }
-        if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)
-                || player.hasPotionEffect(PotionEffectType.CONDUIT_POWER)) {
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            player.removePotionEffect(PotionEffectType.CONDUIT_POWER);
-        } else {
-            addSpectatorEffectsIfEnabled(player);
-        }
+    }
+
+    public void addSpectatorInventory(Player player) {
+        player.getInventory().clear();
+        player.getInventory().addItem(createItem("night_vision", Material.IRON_BLOCK));
+        player.getInventory().addItem(createItem("conduit", Material.GOLD_BLOCK));
+        player.getInventory().addItem(createItem("speed", Material.FEATHER));
+        player.getInventory().addItem(createItem("time", Material.CLOCK));
+        player.getInventory().addItem(createItem("downfall", Material.WATER_BUCKET));
+    }
+
+    private ItemStack createItem(String name, Material material) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("Toggle " + name);
+        meta.getPersistentDataContainer().set(new NamespacedKey(plugin, name), PersistentDataType.INTEGER, 1);
+        item.setItemMeta(meta);
+        return item;
     }
 }
