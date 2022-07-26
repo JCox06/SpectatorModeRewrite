@@ -27,10 +27,7 @@ import co.aikar.commands.PaperCommandManager;
 
 import me.ohowe12.spectatormode.commands.SpectatorCommand;
 import me.ohowe12.spectatormode.context.SpectatorContextCalculator;
-import me.ohowe12.spectatormode.listener.OnCommandPreprocessListener;
-import me.ohowe12.spectatormode.listener.OnGameModeChangeListener;
-import me.ohowe12.spectatormode.listener.OnLogOnListener;
-import me.ohowe12.spectatormode.listener.OnMoveListener;
+import me.ohowe12.spectatormode.listener.*;
 import me.ohowe12.spectatormode.util.ConfigManager;
 import me.ohowe12.spectatormode.util.Logger;
 import me.ohowe12.spectatormode.util.Messenger;
@@ -145,6 +142,7 @@ public class SpectatorMode extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnLogOnListener(this), this);
         getServer().getPluginManager().registerEvents(new OnCommandPreprocessListener(this), this);
         getServer().getPluginManager().registerEvents(new OnGameModeChangeListener(this), this);
+        getServer().getPluginManager().registerEvents(new OnWorldInteractListener(this), this);
     }
 
     private void registerClaimHooks() {
