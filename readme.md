@@ -5,7 +5,10 @@
 
 ---
 
-I use this plugin mostly on my SMP server with my friends. The author stopped updating it, so I thought I would share my updates to the plugin.
+I edited this plugin to better meet the needs of my survival server. This repo contains these edits.
+I did not make this plugin. I only edited it. 
+
+Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 
 ## Updates to 2.2.1
 * Added ClaimCheck class which can be extended to hook into other plugins which provide land claiming functionality
