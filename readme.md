@@ -8,7 +8,9 @@ This version is unstable and incomplete. Use only for testing
 
 ---
 
-I use this plugin mostly on my SMP server with my friends. The author stopped updating it, so I thought I would share my updates to the plugin.
+These are my updates to the SMP Spectator Mode Plugin. I use these edits on my own server to play with my friends.
+I DID NOT MAKE THIS PLUGIN. ONLY EDITED IT. 
+Author: https://github.com/ohowe1/SpectatorModeRewrite
 
 ## Updates to 3.0
 * SPM spectator mode no longer runs in spectator but instead runs in a reduced creative mode.
