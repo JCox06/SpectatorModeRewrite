@@ -4,8 +4,9 @@
 # SMP Spectator Mode 
 ## UNSTABLE Version 3
 
-This version is unstable and incomplete. Use only for testing
+This version is unstable and incomplete.g
 
+I wanted to have SMP spectator mode in a reduced creative mode but soon realised it was a terrible idea.
 ---
 
 These are my updates to the SMP Spectator Mode Plugin. I use these edits on my own server to play with my friends.
