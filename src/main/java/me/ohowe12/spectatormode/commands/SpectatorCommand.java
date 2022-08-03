@@ -60,9 +60,33 @@ public class SpectatorCommand extends BaseCommand {
 
     @Subcommand("effect")
     @Description("Toggles your spectator effects if enabled")
+    @CommandCompletion("night_vision|conduit|weather|time|REVERT")
     @CommandPermission("smpspectator.toggle")
-    public void toggleEffectsCommand(Player player) {
-        spectatorManager.togglePlayerEffects(player);
+    public void toggleEffectsCommand(Player player, String type) {
+        if(type == null) {
+            Messenger.send(player, "specify-effect-message");
+        }
+
+        switch(type.toLowerCase()) {
+            case "revert":
+                spectatorManager.removeSpectatorEffects(player);
+                break;
+            case "night_vision":
+                spectatorManager.toggleNightVisionIfEnabled(player);
+                break;
+            case "conduit":
+                spectatorManager.toggleConduitIfEnabled(player);
+                break;
+            case "weather":
+                spectatorManager.toggleWeatherIfEnabled(player);
+                break;
+            case "time":
+                spectatorManager.addTimeIfEnabled(player);
+                break;
+            default:
+                Messenger.send(player, "specify-effect-message");
+                break;
+        }
     }
 
     @Subcommand("force")

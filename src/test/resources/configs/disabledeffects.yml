@@ -1,3 +1,5 @@
 # config file for SpectatorManagerTest#testNotGivenEffectsWhenDisabled
 night-vision: false
 conduit: false
+em_weather: false
+em_time: false

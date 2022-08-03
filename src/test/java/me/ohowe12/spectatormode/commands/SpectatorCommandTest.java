@@ -1,8 +1,5 @@
 package me.ohowe12.spectatormode.commands;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
@@ -13,10 +10,13 @@ import me.ohowe12.spectatormode.testutils.TestUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.WeatherType;
 import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SpectatorCommandTest {
     ServerMock serverMock;
@@ -125,7 +125,8 @@ public class SpectatorCommandTest {
         spectatorManager.togglePlayer(playerMock, true);
 
         playerMock.addAttachment(plugin, "smpspectator.toggle", true);
-        playerMock.performCommand("spectatormode:s effect");
+        playerMock.performCommand("spectatormode:s effect night_vision");
+        playerMock.performCommand("spectatormode:s effect conduit");
 
         assertFalse(playerMock.hasPotionEffect(PotionEffectType.CONDUIT_POWER));
         assertFalse(playerMock.hasPotionEffect(PotionEffectType.NIGHT_VISION));
@@ -136,7 +137,8 @@ public class SpectatorCommandTest {
         spectatorManager.togglePlayer(playerMock, true);
 
         playerMock.addAttachment(plugin, "smpspectator.toggle", false);
-        playerMock.performCommand("spectatormode:s effect");
+        playerMock.performCommand("spectatormode:s effect night_vision");
+        playerMock.performCommand("spectatormode:s effect conduit");
 
         assertTrue(playerMock.hasPotionEffect(PotionEffectType.CONDUIT_POWER));
         assertTrue(playerMock.hasPotionEffect(PotionEffectType.NIGHT_VISION));

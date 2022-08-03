@@ -23,13 +23,16 @@
 
 package me.ohowe12.spectatormode;
 
+
 import de.myzelyam.api.vanish.VanishAPI;
 import me.ohowe12.spectatormode.state.StateHolder;
 import me.ohowe12.spectatormode.util.Messenger;
 
 import me.ohowe12.spectatormode.util.SpectatorEligibilityChecker;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.WeatherType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,8 +42,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class SpectatorManager {
     private static final PotionEffect NIGHT_VISION =
@@ -116,7 +117,7 @@ public class SpectatorManager {
             removeLeads(target);
 
             target.setGameMode(GameMode.SPECTATOR);
-            addSpectatorEffectsIfEnabled(target);
+            addDefaultSpectatorEffects(target);
 
             stateHolder.save();
 
@@ -177,13 +178,10 @@ public class SpectatorManager {
         }
     }
 
-    private void addSpectatorEffectsIfEnabled(Player target) {
-        if (plugin.getConfigManager().getBoolean("night-vision")) {
-            target.addPotionEffect(NIGHT_VISION);
-        }
-        if (plugin.getConfigManager().getBoolean("conduit")) {
-            target.addPotionEffect(CONDUIT);
-        }
+    private void addDefaultSpectatorEffects(Player target) {
+        toggleNightVisionIfEnabled(target);
+        toggleConduitIfEnabled(target);
+
         if (plugin.getConfigManager().getBoolean("supervanish-hook")) {
             VanishAPI.hidePlayer(target);
         }
@@ -195,6 +193,8 @@ public class SpectatorManager {
         }
         target.removePotionEffect(NIGHT_VISION.getType());
         target.removePotionEffect(CONDUIT.getType());
+        target.resetPlayerTime();
+        target.resetPlayerWeather();
     }
 
     private void removeLeads(Player target) {
@@ -228,17 +228,50 @@ public class SpectatorManager {
         }
     }
 
-    public void togglePlayerEffects(Player player) {
-        if (!stateHolder.hasPlayer(player)) {
-            Messenger.send(player, "no-spectator-message");
+
+    public void toggleNightVisionIfEnabled(Player player) {
+        if (!plugin.getConfigManager().getBoolean("night-vision")) {
             return;
         }
-        if (player.hasPotionEffect(PotionEffectType.NIGHT_VISION)
-                || player.hasPotionEffect(PotionEffectType.CONDUIT_POWER)) {
+
+        if(player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            player.removePotionEffect(PotionEffectType.CONDUIT_POWER);
         } else {
-            addSpectatorEffectsIfEnabled(player);
+            player.addPotionEffect(NIGHT_VISION);
         }
     }
+
+    public void toggleConduitIfEnabled(Player player) {
+        if (!plugin.getConfigManager().getBoolean("conduit")) {
+            return;
+        }
+
+        if(player.hasPotionEffect(PotionEffectType.CONDUIT_POWER)) {
+            player.removePotionEffect(PotionEffectType.CONDUIT_POWER);
+        } else {
+            player.addPotionEffect(CONDUIT);
+        }
+    }
+
+    public void toggleWeatherIfEnabled(Player player) {
+//        if(!plugin.getConfigManager().getBoolean("em-weather")) {
+//            return;
+//        }
+//
+//        if(player.getPlayerWeather() == WeatherType.DOWNFALL || player.getWorld().hasStorm()) {
+//            player.setPlayerWeather(WeatherType.CLEAR);
+//        } else {
+//            player.setPlayerWeather(WeatherType.DOWNFALL);
+//        }
+    }
+
+    public void addTimeIfEnabled(Player player) {
+        if(!plugin.getConfigManager().getBoolean("em-time")) {
+            return;
+        }
+        long currentTime = player.getPlayerTime();
+        int increment = 200;
+        player.setPlayerTime(currentTime + increment, true);
+    }
+
 }

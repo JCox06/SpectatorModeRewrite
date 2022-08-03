@@ -5,15 +5,31 @@
 
 ---
 
-I edited this plugin to better meet the needs of my survival server. This repo contains these edits.
+I edited this plugin to better meet the needs of my survival server. This repo contains these edits. 
 I did not make this plugin. I only edited it. 
 
-Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
+Original Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 
-## Updates to 2.2.1
+## My Edited Versions:
+### Version  2.2.2
+* Allowed player to manipulate the environment. For example, if enabled the player can change the weather and time if they are in spectator mode.
+* To turn on weather and time changes, enable it in the config under `em_weather` and `em_time`
+### Current Issues
+* No permission for specifically changing the weather or time.
+* The plugin does not message the player if the option for time and weather changing is disabled in the config file. Instead the command will not work.
+
+<details>
+<summary>Previous Versions</summary>
+<p>
+
+### Version 2.2.1
 * Added ClaimCheck class which can be extended to hook into other plugins which provide land claiming functionality
 * The new system isn't perfect, and needs way more testing, but it works for now
 * To enabled ClaimCheck tick the option player-land-claim-checking in config.yml and install a compatible plugin
+
+</p>
+</details>
+
 
 
 <details><summary>Default config file</summary>
