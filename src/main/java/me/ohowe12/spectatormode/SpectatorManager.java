@@ -254,15 +254,15 @@ public class SpectatorManager {
     }
 
     public void toggleWeatherIfEnabled(Player player) {
-//        if(!plugin.getConfigManager().getBoolean("em-weather")) {
-//            return;
-//        }
-//
-//        if(player.getPlayerWeather() == WeatherType.DOWNFALL || player.getWorld().hasStorm()) {
-//            player.setPlayerWeather(WeatherType.CLEAR);
-//        } else {
-//            player.setPlayerWeather(WeatherType.DOWNFALL);
-//        }
+        if(!plugin.getConfigManager().getBoolean("em-weather")) {
+            return;
+        }
+
+        if(player.getPlayerWeather() == WeatherType.DOWNFALL || player.getWorld().hasStorm()) {
+            player.setPlayerWeather(WeatherType.CLEAR);
+        } else {
+            player.setPlayerWeather(WeatherType.DOWNFALL);
+        }
     }
 
     public void addTimeIfEnabled(Player player) {
