@@ -170,6 +170,5 @@ spec-cancel-message: '&cSpectator mode has been cancelled'
 # Message sent when a player is not in their claim
 not-in-claim-message: '&cYou need to be in your claim to complete this action'
 
-
 # Get debug logs
 debug: false

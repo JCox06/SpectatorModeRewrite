@@ -86,7 +86,8 @@ public class SpectatorMode extends JavaPlugin {
         spectatorManager = new SpectatorManager(this);
         registerCommands();
         if (config.getBoolean("update-checker")) {
-            checkUpdate();
+//            checkUpdate();
+            pluginLogger.log("Checking for updates is disabled as this resource is not on SpigotMC");
         }
         if (!unitTest) {
             addMetrics();
@@ -113,7 +114,7 @@ public class SpectatorMode extends JavaPlugin {
     }
 
     private void addMetrics() {
-        Metrics metrics = new Metrics(this, 7132);
+        Metrics metrics = new Metrics(this, 16110);
         for (Map.Entry<String, String> entry : config.getAllBooleansAndNumbers().entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
