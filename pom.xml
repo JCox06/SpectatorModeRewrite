@@ -195,6 +195,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.TechFortress</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>16.18</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.8.2</version>
@@ -217,13 +223,6 @@
             <artifactId>MockBukkit-v1.18</artifactId>
             <version>1.15.5</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.TechFortress</groupId>
-            <artifactId>GriefPrevention</artifactId>
-            <version>16.18</version>
-            <scope>provided</scope>
         </dependency>
 
     </dependencies>
