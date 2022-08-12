@@ -10,6 +10,15 @@ I did not make this plugin. I only edited it.
 
 Original Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 
+## Download
+You [can download my plugin by clicking here.](https://github.com/JCox06/SpectatorModeRewrite/releases/download/v2.2.3/SpectatorMode-2.2.3.jar) Or you can check the releases.
+
+## Features this fork adds
+* Only allow spectator in player claims. Works currently with GriefPrevention
+* Added permissions for night vision and conduit
+* Added two new effects which can be used to manipulate the environment such as spectator and weather
+* Allows you to edit default spectator effects.
+
 ## My Edited Versions:
 
 ### Version 2.2.3
