@@ -29,7 +29,6 @@ import me.ohowe12.spectatormode.state.StateHolder;
 import me.ohowe12.spectatormode.util.Messenger;
 
 import me.ohowe12.spectatormode.util.SpectatorEligibilityChecker;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
@@ -48,7 +47,6 @@ public class SpectatorManager {
             new PotionEffect(PotionEffectType.NIGHT_VISION, 10000000, 1);
     private static final PotionEffect CONDUIT =
             new PotionEffect(PotionEffectType.CONDUIT_POWER, 10000000, 1);
-
     private final StateHolder stateHolder;
     private final SpectatorMode plugin;
     private boolean spectatorEnabled;
@@ -179,8 +177,14 @@ public class SpectatorManager {
     }
 
     private void addDefaultSpectatorEffects(Player target) {
-        toggleNightVisionIfEnabled(target);
-        toggleConduitIfEnabled(target);
+
+        if(plugin.getConfigManager().getBoolean("night-vision")) {
+            toggleNightVision(target);
+        }
+
+        if(plugin.getConfigManager().getBoolean("conduit")) {
+            toggleConduit(target);
+        }
 
         if (plugin.getConfigManager().getBoolean("supervanish-hook")) {
             VanishAPI.hidePlayer(target);
@@ -228,50 +232,50 @@ public class SpectatorManager {
         }
     }
 
-
-    public void toggleNightVisionIfEnabled(Player player) {
-        if (!plugin.getConfigManager().getBoolean("night-vision")) {
+    public void toggleSpectatorEffect(Player target, SpectatorEffect spectatorEffect) {
+        if(!stateHolder.hasPlayer(target)) {
+            Messenger.send(target, "not-in-state-message");
             return;
         }
 
-        if(player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-        } else {
-            player.addPotionEffect(NIGHT_VISION);
+        switch(spectatorEffect) {
+            case CONDUIT -> toggleConduit(target);
+            case VISION -> toggleNightVision(target);
+            case WEATHER -> toggleWeather(target);
+            case TIME -> addTime(target);
         }
     }
 
-    public void toggleConduitIfEnabled(Player player) {
-        if (!plugin.getConfigManager().getBoolean("conduit")) {
-            return;
-        }
+    private void toggleNightVision(Player target) {
 
-        if(player.hasPotionEffect(PotionEffectType.CONDUIT_POWER)) {
-            player.removePotionEffect(PotionEffectType.CONDUIT_POWER);
+        if(target.hasPotionEffect(NIGHT_VISION.getType())) {
+            target.removePotionEffect(NIGHT_VISION.getType());
         } else {
-            player.addPotionEffect(CONDUIT);
+            target.addPotionEffect(NIGHT_VISION);
         }
     }
 
-    public void toggleWeatherIfEnabled(Player player) {
-        if(!plugin.getConfigManager().getBoolean("em-weather")) {
-            return;
-        }
+    private void toggleConduit(Player target) {
 
-        if(player.getPlayerWeather() == WeatherType.DOWNFALL || player.getWorld().hasStorm()) {
-            player.setPlayerWeather(WeatherType.CLEAR);
+        if(target.hasPotionEffect(CONDUIT.getType())) {
+            target.removePotionEffect(CONDUIT.getType());
         } else {
-            player.setPlayerWeather(WeatherType.DOWNFALL);
+            target.addPotionEffect(CONDUIT);
         }
     }
 
-    public void addTimeIfEnabled(Player player) {
-        if(!plugin.getConfigManager().getBoolean("em-time")) {
-            return;
+    private void toggleWeather(Player target) {
+        if(target.getPlayerWeather() == WeatherType.DOWNFALL || target.getWorld().hasStorm()) {
+            target.setPlayerWeather(WeatherType.CLEAR);
+        } else {
+            target.setPlayerWeather(WeatherType.DOWNFALL);
         }
-        long currentTime = player.getPlayerTime();
+    }
+
+    private void addTime(Player target) {
+        long currentTime = target.getPlayerTime();
         int increment = 200;
-        player.setPlayerTime(currentTime + increment, true);
+        target.setPlayerTime(currentTime + increment, true);
     }
 
 }

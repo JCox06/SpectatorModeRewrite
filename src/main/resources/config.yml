@@ -10,10 +10,8 @@
 # If the command /s is enabled (/s enable overrules this)
 enabled: true
 
-# If a player receives the night vision effect while in spectator mode
+# Enable or disable *default* effects when entering SMP Spectator.
 night-vision: true
-
-# If a player receives the conduit effect while in spectator mode
 conduit: true
 
 # If when a player logs on in spectator mode they will be teleported back
@@ -27,12 +25,6 @@ worlds-allowed: [ world, world_nether, world_the_end ]
 #Ensures that the player is in a land claim before they use spectator mode
 #Automatically detects your land claim plugin, currently supports: GriefPrevention
 player-land-claim-checking: false
-
-#EM allows a player to change the time and weather for their client only.
-#For example, during spectator, a player might want to change the weather.
-#Executing the command will change the weather for that player only and will not affect any other player on the server.
-em-weather: true
-em-time: true
 
 # If the y level is limited to the number in y-level in spectator mode
 enforce-y: false
@@ -178,8 +170,6 @@ spec-cancel-message: '&cSpectator mode has been cancelled'
 # Message sent when a player is not in their claim
 not-in-claim-message: '&cYou need to be in your claim to complete this action'
 
-#Message send when the player does not specify an effect
-specify-effect-message: '&cYou need to specify the effect: night vision, conduit, time, weather'
 
 # Get debug logs
 debug: false

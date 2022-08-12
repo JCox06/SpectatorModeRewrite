@@ -3,6 +3,7 @@ package me.ohowe12.spectatormode.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 
+import me.ohowe12.spectatormode.SpectatorEffect;
 import me.ohowe12.spectatormode.SpectatorManager;
 import me.ohowe12.spectatormode.SpectatorMode;
 import me.ohowe12.spectatormode.util.Messenger;
@@ -58,35 +59,32 @@ public class SpectatorCommand extends BaseCommand {
         Messenger.send(sender, "reload-message");
     }
 
-    @Subcommand("effect")
-    @Description("Toggles your spectator effects if enabled")
-    @CommandCompletion("night_vision|conduit|weather|time|REVERT")
-    @CommandPermission("smpspectator.toggle")
-    public void toggleEffectsCommand(Player player, String type) {
-        if(type == null) {
-            Messenger.send(player, "specify-effect-message");
-        }
+    @Subcommand("effect nightvision")
+    @Description("Toggles your spectator night vision")
+    @CommandPermission("smpspectator.toggle.night_vision")
+    public void toggleNightVisionCommand(Player player) {
+        spectatorManager.toggleSpectatorEffect(player, SpectatorEffect.VISION);
+    }
 
-        switch(type.toLowerCase()) {
-            case "revert":
-                spectatorManager.removeSpectatorEffects(player);
-                break;
-            case "night_vision":
-                spectatorManager.toggleNightVisionIfEnabled(player);
-                break;
-            case "conduit":
-                spectatorManager.toggleConduitIfEnabled(player);
-                break;
-            case "weather":
-                spectatorManager.toggleWeatherIfEnabled(player);
-                break;
-            case "time":
-                spectatorManager.addTimeIfEnabled(player);
-                break;
-            default:
-                Messenger.send(player, "specify-effect-message");
-                break;
-        }
+    @Subcommand("effect conduit")
+    @Description("Toggles your spectator conduit power")
+    @CommandPermission("smpspectator.toggle.conduit")
+    public void toggleConduitCommand(Player player) {
+        spectatorManager.toggleSpectatorEffect(player, SpectatorEffect.CONDUIT);
+    }
+
+    @Subcommand("effect time")
+    @Description("Increments your spectator time by 200")
+    @CommandPermission("smpspectator.toggle.time")
+    public void addTimeCommand(Player player) {
+        spectatorManager.toggleSpectatorEffect(player, SpectatorEffect.TIME);
+    }
+
+    @Subcommand("effect weather")
+    @Description("Toggles your spectator weather effects. ")
+    @CommandPermission("smpspectator.toggle.weather")
+    public void toggleWeatherCommand(Player player) {
+        spectatorManager.toggleSpectatorEffect(player, SpectatorEffect.WEATHER);
     }
 
     @Subcommand("force")

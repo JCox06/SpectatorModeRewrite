@@ -11,16 +11,18 @@ I did not make this plugin. I only edited it.
 Original Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 
 ## My Edited Versions:
-### Version  2.2.2
-* Allowed player to manipulate the environment. For example, if enabled the player can change the weather and time if they are in spectator mode.
-* To turn on weather and time changes, enable it in the config under `em_weather` and `em_time`
-### Current Issues
-* No permission for specifically changing the weather or time.
-* The plugin does not message the player if the option for time and weather changing is disabled in the config file. Instead the command will not work.
+
+### Version 2.2.3
+* Changed the weather and time effect to be enabled through a permission rather than a config option.
+* You can now enable and disable default effects for spectator mode in config.
 
 <details>
 <summary>Previous Versions</summary>
 <p>
+
+### Version  2.2.2
+* Allowed player to manipulate the environment. For example, if enabled the player can change the weather and time if they are in spectator mode.
+* To turn on weather and time changes, enable it in the config under `em_weather` and `em_time`
 
 ### Version 2.2.1
 * Added ClaimCheck class which can be extended to hook into other plugins which provide land claiming functionality
@@ -34,6 +36,7 @@ Original Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 
 <details><summary>Default config file</summary>
 <p>
+
 ## Default `config.yml`
 
 ```yml
@@ -49,10 +52,8 @@ Original Author of Plugin: https://github.com/ohowe1/SpectatorModeRewrite
 # If the command /s is enabled (/s enable overrules this)
 enabled: true
 
-# If a player receives the night vision effect while in spectator mode
+# Enable or disable *default* effects when entering SMP Spectator.
 night-vision: true
-
-# If a player receives the conduit effect while in spectator mode
 conduit: true
 
 # If when a player logs on in spectator mode they will be teleported back
@@ -98,7 +99,7 @@ prevent-teleport: false
 # Prevents these commands from being executed unless you have the smpspectator.bypass permission. Example list: [back, return, home, homes, tpaccept, tpyes, warp, warps]
 bad-commands: [ ]
 
-# If this is above 0, the player has to be still for the next X seconds after preforming the command to enter spectator mode. int
+# If this is above 0, the player has to be still for the next X ticks (20 a second normally) after preforming the command to enter spectator mode. int
 stand-still-ticks: 0
 
 # Prevents players from going past the world border in spectator mode
@@ -138,6 +139,9 @@ spectator-ticks: -1
 # the player will be vanished regardless if they have supervanish permissions if you enable this option.
 # if you don't want players to enter vanish when using spectator mode with /gamemode, disable watch-gamemode
 supervanish-hook: false
+
+# What game mode to change back to. options: survival, creative, adventure
+switch-back-to: survival
 
 ### Message section ###
 #Adding /actionbar/ in front of a message, will make it appear in the actionbar instead of the chat
@@ -201,6 +205,13 @@ moved-message: '&cYou moved! Spectator mode has been cancelled'
 
 # Message sent when player has reached there time limit in spectator mode
 times-up-message: '&cTime limit reached! Toggling gamemode to &b&lSURVIVAL MODE'
+
+# Message sent when player is awaiting spectator and preforms the command again
+spec-cancel-message: '&cSpectator mode has been cancelled'
+
+# Message sent when a player is not in their claim
+not-in-claim-message: '&cYou need to be in your claim to complete this action'
+
 
 # Get debug logs
 debug: false

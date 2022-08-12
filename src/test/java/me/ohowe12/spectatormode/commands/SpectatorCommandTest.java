@@ -124,8 +124,10 @@ public class SpectatorCommandTest {
     void effectsCommand_WithPermission_DoesntHaveEffects() {
         spectatorManager.togglePlayer(playerMock, true);
 
-        playerMock.addAttachment(plugin, "smpspectator.toggle", true);
-        playerMock.performCommand("spectatormode:s effect night_vision");
+        playerMock.addAttachment(plugin, "smpspectator.toggle.conduit", true);
+        playerMock.addAttachment(plugin, "smpspectator.toggle.night_vision", true);
+
+        playerMock.performCommand("spectatormode:s effect nightvision");
         playerMock.performCommand("spectatormode:s effect conduit");
 
         assertFalse(playerMock.hasPotionEffect(PotionEffectType.CONDUIT_POWER));
@@ -137,7 +139,7 @@ public class SpectatorCommandTest {
         spectatorManager.togglePlayer(playerMock, true);
 
         playerMock.addAttachment(plugin, "smpspectator.toggle", false);
-        playerMock.performCommand("spectatormode:s effect night_vision");
+        playerMock.performCommand("spectatormode:s effect nightvision");
         playerMock.performCommand("spectatormode:s effect conduit");
 
         assertTrue(playerMock.hasPotionEffect(PotionEffectType.CONDUIT_POWER));

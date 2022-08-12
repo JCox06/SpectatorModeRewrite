@@ -17,6 +17,13 @@ permissions:
       smpspectator.bypass: true
       smpspectator.force: true
       smpspectator.toggle: true
+  smpspectator.toggle:
+    description: Give access to entire spectator effects permission node
+    children:
+      smpspectator.toggle.time: true
+      smpspectator.toggle.weather: true
+      smpspectator.toggle.night_vision: true
+      smpspectator.toggle.conduit: true
   smpspectator.use:
     description: Be able to use the /s command
     default: op
@@ -29,8 +36,17 @@ permissions:
   smpspectator.force:
     description: Be able to force other players into and out of spectator mode
     default: op
-  smpspectator.toggle:
-    description: Be able to use the /s effect command
+  smpspectator.toggle.time:
+    description: Allows players to manipulate the time while in spectator
+    default: op
+  smpspectator.toggle.weather:
+    description: Allows players to manipulate the weather while in spectator
+    default: op
+  smpspectator.toggle.night_vision:
+    description: Allows players to see in the dark while under spectator
+    default: op
+  smpspectator.toggle.conduit:
+    description: Allows players to receive conduit while under spectator
     default: op
   smpspectator.reload:
     description: Be able to reload the config

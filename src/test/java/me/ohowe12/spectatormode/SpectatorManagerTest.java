@@ -115,8 +115,8 @@ class SpectatorManagerTest {
         spectatorManager.removeSpectatorEffects(playerMock);
         assertDoesNotHaveAnyEffects(playerMock);
 
-        spectatorManager.toggleNightVisionIfEnabled(playerMock);
-        spectatorManager.toggleConduitIfEnabled(playerMock);
+        spectatorManager.toggleSpectatorEffect(playerMock, SpectatorEffect.VISION);
+        spectatorManager.toggleSpectatorEffect(playerMock, SpectatorEffect.CONDUIT);
         assertHasSpectatorEffects(playerMock);
     }
 
