@@ -223,22 +223,31 @@ debug: false
 <p>
   
 ## Permissions for SMP Spectator Mode
-`spectator.*`: Give access to the entire permission node
 
-`smpspectator.use`: Be able to use the /s command
+Below shows the following permissions and what they allow each player to do
 
-`smpspectator.enable`: Be able to enable and disable spectator mode from the /s command
-
-`smpspectator.speed`: Be able to change fly speed in spectator mode
-
-`smpspectator.bypass`: Be able to bypass the y-level and block restrictions
-
-`smpspectator.force`: Be able to force other players into and out of spectator mode
-
-`smpspectator.toggle`: Be able to use the /seffect command
-
-`smpspectator.reload`: Be able to reload the config
-
+```
+spectator.*: Give access to all permissions  
+  
+	smpspectator.toggle: Give access to all spectator effects
+	
+		smpspectator.toggle.time: Give access to time controller while in spectator
+		smpspectator.toggle.weather: Give access to weather controller while in spectator
+		smpspectator.toggle.night_vision: Give access to night vision while in spectator
+		smpspectator.toggle.conduit: Give access to condit while in spectator
+  
+	smpspectator.use: Be able to use the /s command  
+  
+	smpspectator.enable: Be able to enable and disable spectator mode from the /s command  
+  
+	smpspectator.speed: Be able to change fly speed in spectator mode  
+  
+	smpspectator.bypass: Be able to bypass the y-level and block restrictions  
+  
+	smpspectator.force: Be able to force other players into and out of spectator mode  
+  
+	smpspectator.reload: Be able to reload the config  
+```
 </p>
 </details>
 
